@@ -6,6 +6,7 @@ from __future__ import print_function
 import copy
 import logging
 import math
+import time
 
 from os.path import join as pjoin
 
@@ -19,6 +20,8 @@ from torch.nn.modules.utils import _pair
 from scipy import ndimage
 
 import models.configs as configs
+
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -296,13 +299,13 @@ class VisionTransformer(nn.Module):
         self.classifier = config.classifier
         self.transformer = Transformer(config, img_size)
         self.part_head = Linear(config.hidden_size, num_classes,bias=False)
-        self.arcface = ArcFace(s = 10)
+        self.arcface = ArcFace(s=10,m=0.4)
     def forward(self, x, labels=None):
         part_tokens = self.transformer(x)
         part_logits = self.part_head(part_tokens[:, 0])
 
         if labels is not None:
-            part_logits = self.arcface(F.normalize(part_logits), labels.view(-1))
+            part_logits = self.arcface(part_logits, labels.view(-1))
             if self.smoothing_value == 0:
                 loss_fct = CrossEntropyLoss()
             else:
@@ -376,43 +379,26 @@ def con_loss(features, labels):
     loss /= (B * B)
     return loss
 
+
 class ArcFace(nn.Module):
-    r"""Implement of large margin arc distance: :
-        Args:
-            in_features: size of each input sample
-            out_features: size of each output sample
-            s: norm of input feature
-            m: margin
-            cos(theta + m)
-        """
-    def __init__(self, s=30.0, m=0.50, easy_margin=False):
+    ''' s: norm of input feature
+        m: margin
+        cos(theta + m)'''
+    def __init__(self, s=30.0, m=0.50):
         super(ArcFace, self).__init__()
         self.s = s
         self.m = m
-        self.easy_margin = easy_margin
-        self.cos_m = math.cos(m)
-        self.sin_m = math.sin(m)
-        self.th = math.cos(math.pi - m)
-        self.mm = math.sin(math.pi - m) * m
 
-    def forward(self, cosine, label):
-        # --------------------------- cos(theta) & phi(theta) ---------------------------
-        sine = torch.sqrt((1.0 - torch.pow(cosine, 2)).clamp(0, 1))
-        phi = cosine * self.cos_m - sine * self.sin_m
-        if self.easy_margin:
-            phi = torch.where(cosine > 0, phi, cosine)
-        else:
-            phi = torch.where(cosine > self.th, phi, cosine - self.mm)
-        # --------------------------- convert label to one-hot ---------------------------
-        # one_hot = torch.zeros(cosine.size(), requires_grad=True, device='cuda')
-        # one_hot = torch.zeros(cosine.size(),device = 'cuda')
-        one_hot = torch.zeros(cosine.size())
-        one_hot.scatter_(1, label.view(-1, 1).long(), 1)
-        # -------------torch.where(out_i = {x_i if condition_i else y_i) -------------
-        output = (one_hot * phi) + ((1.0 - one_hot) * cosine)  # you can use torch.where if your torch.__version__ is 0.4
+    def forward(self, logits, labels):
+        cosine = F.normalize(logits)
+        # scale = logits.norm(-1).reshape(-1,1)
+        one_hot = torch.zeros(cosine.size(),device = 'cuda')
+        one_hot.scatter_(1, labels.view(-1, 1).long(), 1)
+        one_hot *= self.m
+        arc_cos = torch.arccos(cosine) + one_hot
+        output = torch.cos(arc_cos)
         output *= self.s
-        # print(output)
-
+        # print(f'output:\n{output}')
         return output
 
 CONFIGS = {
@@ -425,13 +411,16 @@ CONFIGS = {
 }
 if __name__ == '__main__':
     loss = CrossEntropyLoss()
-    A = torch.arange(10).reshape(2,5).float()
-    W = Linear(5,3,bias=False)
+    A = torch.randn(20).reshape(-1,5).float()
+    W = Linear(5,5,bias=False)
     logits = W(A)
-    print(f'unnormalize: {logits}')
-    logits = F.normalize(logits)
-    print(f'normalized : {logits}')
-    label = torch.tensor([2,2])
-    arc = ArcFace(10)
-    arc_margin = arc(logits,label)
-    print(arc_margin)
+    print(f'unnormalize:\n{logits}')
+    labels = torch.tensor([0,1,2,2])
+    arc = ArcFace(s = 10,m=0.4)
+    pred = arc(logits,labels)
+    loss = CrossEntropyLoss()
+    conloss = con_loss(F.softmax(A, dim=1), labels)
+    print(conloss)
+    celoss = loss(F.softmax(pred, dim=1), labels)
+    print(celoss)
+    print(f'total:\n{celoss + conloss}')

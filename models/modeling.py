@@ -299,7 +299,7 @@ class VisionTransformer(nn.Module):
         self.arcface = ArcMarginProduct(config.hidden_size, num_classes)
     def forward(self, x, labels=None):
         part_tokens = self.transformer(x)
-        part_logits = self.arcface(part_tokens[:, 0])
+        part_logits = self.arcface(part_tokens[:, 0],labels.view(-1))
 
         if labels is not None:
             if self.smoothing_value == 0:
@@ -435,6 +435,7 @@ if __name__ == '__main__':
     label = torch.tensor([2,2])
     easymargin = arc1(A,label)
     arcmargin = arc(A,label)
+    origin_ce = loss(A,label)
     easy_ce = loss(easymargin,label)
     arc_ce = loss(arcmargin, label)
-    print(f'easy ce:{easy_ce}\tarc ce:{arc_ce}')
+    print(f'origin ce: {origin_ce}\neasy ce:{easy_ce}\narc ce:{arc_ce}')

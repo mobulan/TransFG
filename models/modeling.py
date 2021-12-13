@@ -31,6 +31,7 @@ FC_1 = "MlpBlock_3/Dense_1"
 ATTENTION_NORM = "LayerNorm_0"
 MLP_NORM = "LayerNorm_2"
 
+
 def np2th(weights, conv=False):
     """Possibly convert HWIO to OIHW."""
     if conv:
@@ -295,10 +296,10 @@ class VisionTransformer(nn.Module):
         self.classifier = config.classifier
         self.transformer = Transformer(config, img_size)
         self.part_head = Linear(config.hidden_size, num_classes)
-
+        self.arcface = ArcMarginProduct(config.hidden_size, num_classes)
     def forward(self, x, labels=None):
         part_tokens = self.transformer(x)
-        part_logits = self.part_head(part_tokens[:, 0])
+        part_logits = self.arcface(part_tokens[:, 0])
 
         if labels is not None:
             if self.smoothing_value == 0:
@@ -374,6 +375,50 @@ def con_loss(features, labels):
     loss /= (B * B)
     return loss
 
+class ArcMarginProduct(nn.Module):
+    r"""Implement of large margin arc distance: :
+        Args:
+            in_features: size of each input sample
+            out_features: size of each output sample
+            s: norm of input feature
+            m: margin
+            cos(theta + m)
+        """
+    def __init__(self, in_features, out_features, s=30.0, m=0.50, easy_margin=False):
+        super(ArcMarginProduct, self).__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.s = s
+        self.m = m
+        self.weight = nn.Parameter(torch.FloatTensor(out_features, in_features))
+        nn.init.xavier_uniform_(self.weight)
+
+        self.easy_margin = easy_margin
+        self.cos_m = math.cos(m)
+        self.sin_m = math.sin(m)
+        self.th = math.cos(math.pi - m)
+        self.mm = math.sin(math.pi - m) * m
+
+    def forward(self, input, label):
+        # --------------------------- cos(theta) & phi(theta) ---------------------------
+        cosine = F.linear(F.normalize(input), F.normalize(self.weight))
+        sine = torch.sqrt((1.0 - torch.pow(cosine, 2)).clamp(0, 1))
+        phi = cosine * self.cos_m - sine * self.sin_m
+        if self.easy_margin:
+            phi = torch.where(cosine > 0, phi, cosine)
+        else:
+            phi = torch.where(cosine > self.th, phi, cosine - self.mm)
+        # --------------------------- convert label to one-hot ---------------------------
+        # one_hot = torch.zeros(cosine.size(), requires_grad=True, device='cuda')
+        one_hot = torch.zeros(cosine.size())
+        one_hot.scatter_(1, label.view(-1, 1).long(), 1)
+        # -------------torch.where(out_i = {x_i if condition_i else y_i) -------------
+        output = (one_hot * phi) + ((1.0 - one_hot) * cosine)  # you can use torch.where if your torch.__version__ is 0.4
+        output *= self.s
+        # print(output)
+
+        return output
+
 CONFIGS = {
     'ViT-B_16': configs.get_b16_config(),
     'ViT-B_32': configs.get_b32_config(),
@@ -382,3 +427,14 @@ CONFIGS = {
     'ViT-H_14': configs.get_h14_config(),
     'testing': configs.get_testing(),
 }
+if __name__ == '__main__':
+    loss = CrossEntropyLoss()
+    arc = ArcMarginProduct(5,3)
+    arc1 = ArcMarginProduct(5,3,easy_margin=True)
+    A = torch.arange(10).reshape(2,5).float()
+    label = torch.tensor([2,2])
+    easymargin = arc1(A,label)
+    arcmargin = arc(A,label)
+    easy_ce = loss(easymargin,label)
+    arc_ce = loss(arcmargin, label)
+    print(f'easy ce:{easy_ce}\tarc ce:{arc_ce}')

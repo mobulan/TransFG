@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3b05660-7b4f-46a2-9530-fe3fc805d4b1" name="变更" comment="add_arcface">
-      <change beforePath="$PROJECT_DIR$/models/modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/modeling.py" afterDir="false" />
-    </list>
+    <list default="true" id="f3b05660-7b4f-46a2-9530-fe3fc805d4b1" name="变更" comment="add_arcface" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,7 +96,7 @@
       <workItem from="1638849057579" duration="4556000" />
       <workItem from="1638862359613" duration="2652000" />
       <workItem from="1638870258163" duration="385000" />
-      <workItem from="1639230209280" duration="4004000" />
+      <workItem from="1639230209280" duration="9089000" />
     </task>
     <task id="LOCAL-00001" summary="add_arcface">
       <created>1639361238536</created>
@@ -107,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639361238536</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add_arcface">
+      <created>1639373585861</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1639373585861</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,6 +134,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="add_arcface" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TransFG$modeling.coverage" NAME="modeling 覆盖结果" MODIFIED="1639361636535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/TransFG$modeling.coverage" NAME="modeling 覆盖结果" MODIFIED="1639366175134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
   </component>
 </project>

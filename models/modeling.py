@@ -299,13 +299,13 @@ class VisionTransformer(nn.Module):
         self.classifier = config.classifier
         self.transformer = Transformer(config, img_size)
         self.part_head = Linear(config.hidden_size, num_classes,bias=False)
-        self.arcface = ArcFace(s=10,m=0.4)
+        self.arcface = ArcFace(s=20,m=0.4)
     def forward(self, x, labels=None):
         part_tokens = self.transformer(x)
         part_logits = self.part_head(part_tokens[:, 0])
 
         if labels is not None:
-            # part_logits = self.arcface(part_logits, labels.view(-1))
+            part_logits = self.arcface(part_logits, labels.view(-1))
             if self.smoothing_value == 0:
                 loss_fct = CrossEntropyLoss()
             else:
@@ -396,16 +396,16 @@ class ArcFace(nn.Module):
         # print(f'cosine:\n{cosine}')
         # scale = logits.norm(-1).reshape(-1,1)
 
-        # # 根据分类概率的区分度来动态调整边距
-        # probability = F.softmax(cosine,dim=-1)
-        # sample_index = torch.arange(labels.shape[0])
-        # pred = probability[sample_index,labels.reshape(-1)]
-        # difference = abs(probability-pred.reshape(-1,1)).sum(-1)
-        # difference = (difference/cosine.shape[-1]).reshape(-1,1)
-        # class_margin = self.alpha * (1 - difference) + self.m
-        #
-        # # print(f'probability\n{probability}')
-        # # print(f'difference:{difference}')
+        # 根据分类概率的区分度来动态调整边距
+        probability = F.softmax(cosine,dim=-1)
+        sample_index = torch.arange(labels.shape[0])
+        pred = probability[sample_index,labels.reshape(-1)]
+        difference = abs(probability-pred.reshape(-1,1)).sum(-1)
+        difference = (difference/cosine.shape[-1]).reshape(-1,1)
+        class_margin = self.alpha * (1 - difference) + self.m
+
+        # print(f'probability\n{probability}')
+        # print(f'difference:{difference}')
 
 
         one_hot = torch.zeros(cosine.size(),device='cuda').half()

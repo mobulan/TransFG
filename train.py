@@ -51,7 +51,8 @@ def reduce_mean(tensor, nprocs):
 
 def save_model(args, model):
     model_to_save = model.module if hasattr(model, 'module') else model
-    model_checkpoint = os.path.join(args.output_dir, "%s_checkpoint.bin" % args.name)
+    model_checkpoint = os.path.join(args.output_dir,
+        "%s_checkpoint.bin" % args.name+time.strftime('%Y-%m-%d-%H_%M_%S',time.localtime()))
     if args.fp16:
         checkpoint = {
             'model': model_to_save.state_dict(),
@@ -166,7 +167,7 @@ def train(args, model):
     """ Train the model """
     if args.local_rank in [-1, 0]:
         os.makedirs(args.output_dir, exist_ok=True)
-    writer = SummaryWriter(log_dir=os.path.join("logs", args.name))
+    writer = SummaryWriter(log_dir=os.path.join("logs", args.name,time.strftime('%Y/%m/%d %H:%M:%S.log',time.localtime())))
 
     args.train_batch_size = args.train_batch_size // args.gradient_accumulation_steps
 
@@ -361,6 +362,7 @@ def main():
     # Setup logging
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
                         datefmt='%m/%d/%Y %H:%M:%S',
+                        filename=time.strftime('%Y-%m-%d-%H_%M_%S.txt',time.localtime()),
                         level=logging.INFO if args.local_rank in [-1, 0] else logging.WARN)
     logger.warning("Process rank: %s, device: %s, n_gpu: %s, distributed training: %s, 16-bits training: %s" %
                    (args.local_rank, args.device, args.n_gpu, bool(args.local_rank != -1), args.fp16))

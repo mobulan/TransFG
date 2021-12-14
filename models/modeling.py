@@ -305,14 +305,15 @@ class VisionTransformer(nn.Module):
         part_logits = self.part_head(part_tokens[:, 0])
 
         if labels is not None:
-            part_logits = self.arcface(part_logits, labels.view(-1))
+            # part_logits = self.arcface(part_logits, labels.view(-1))
             if self.smoothing_value == 0:
                 loss_fct = CrossEntropyLoss()
             else:
                 loss_fct = LabelSmoothing(self.smoothing_value)
             part_loss = loss_fct(part_logits.view(-1, self.num_classes), labels.view(-1))
             contrast_loss = con_loss(part_tokens[:, 0], labels.view(-1))
-            loss = part_loss + contrast_loss
+            # loss = part_loss + contrast_loss
+            loss = part_loss
             return loss, part_logits
         else:
             return part_logits
@@ -388,13 +389,29 @@ class ArcFace(nn.Module):
         super(ArcFace, self).__init__()
         self.s = s
         self.m = m
+        self.alpha = 0.5
 
     def forward(self, logits, labels):
-        cosine = F.normalize(logits)
+        cosine = F.normalize(logits,dim=-1)
+        # print(f'cosine:\n{cosine}')
         # scale = logits.norm(-1).reshape(-1,1)
-        one_hot = torch.zeros(cosine.size(),device = 'cuda')
-        one_hot.scatter_(1, labels.view(-1, 1).long(), 1)
-        one_hot *= self.m
+
+        # # 根据分类概率的区分度来动态调整边距
+        # probability = F.softmax(cosine,dim=-1)
+        # sample_index = torch.arange(labels.shape[0])
+        # pred = probability[sample_index,labels.reshape(-1)]
+        # difference = abs(probability-pred.reshape(-1,1)).sum(-1)
+        # difference = (difference/cosine.shape[-1]).reshape(-1,1)
+        # class_margin = self.alpha * (1 - difference) + self.m
+        #
+        # # print(f'probability\n{probability}')
+        # # print(f'difference:{difference}')
+
+
+        one_hot = torch.zeros(cosine.size(),device='cuda').half()
+        print(one_hot.dtype)
+        # one_hot = torch.zeros(cosine.size())
+        one_hot.scatter_(1, labels.view(-1, 1), class_margin).float()
         arc_cos = torch.arccos(cosine) + one_hot
         output = torch.cos(arc_cos)
         output *= self.s
@@ -411,16 +428,13 @@ CONFIGS = {
 }
 if __name__ == '__main__':
     loss = CrossEntropyLoss()
-    A = torch.randn(20).reshape(-1,5).float()
-    W = Linear(5,5,bias=False)
+    device = 'cuda'
+    A = torch.randn(25,device=device).reshape(-1,5).float()
+    W = Linear(5,5,bias=False,device=device)
     logits = W(A)
-    print(f'unnormalize:\n{logits}')
-    labels = torch.tensor([0,1,2,2])
-    arc = ArcFace(s = 10,m=0.4)
+    labels = torch.tensor([0,1,2,2,4],device=device)
+    arc = ArcFace(s = 20,m=0.2)
     pred = arc(logits,labels)
     loss = CrossEntropyLoss()
-    conloss = con_loss(F.softmax(A, dim=1), labels)
-    print(conloss)
     celoss = loss(F.softmax(pred, dim=1), labels)
     print(celoss)
-    print(f'total:\n{celoss + conloss}')

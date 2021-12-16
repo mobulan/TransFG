@@ -1,0 +1,388 @@
+12/16/2021 07:45:35 - INFO - __main__ - create File
+12/16/2021 07:45:35 - WARNING - __main__ - test
+12/16/2021 07:45:35 - ERROR - __main__ - test
+12/16/2021 07:45:35 - INFO - __main__ - create File
+12/16/2021 07:45:35 - WARNING - __main__ - test
+12/16/2021 07:45:35 - ERROR - __main__ - test
+12/16/2021 07:45:38 - INFO - root - Added key: store_based_barrier_key:1 to store for rank: 0
+12/16/2021 07:45:38 - WARNING - __main__ - Process rank: 0, device: cuda:0, n_gpu: 1, distributed training: True, 16-bits training: True
+12/16/2021 07:45:38 - INFO - root - Added key: store_based_barrier_key:1 to store for rank: 1
+12/16/2021 07:45:38 - WARNING - __main__ - Process rank: 1, device: cuda:1, n_gpu: 1, distributed training: True, 16-bits training: True
+12/16/2021 07:45:40 - INFO - models.modeling - load_pretrained: resized variant: torch.Size([1, 197, 768]) to torch.Size([1, 785, 768])
+12/16/2021 07:45:40 - INFO - models.modeling - load_pretrained: resized variant: torch.Size([1, 197, 768]) to torch.Size([1, 785, 768])
+12/16/2021 07:45:44 - INFO - __main__ - classifier: token
+hidden_size: 768
+patches:
+  size: !!python/tuple
+  - 16
+  - 16
+representation_size: null
+slide_step: 12
+split: non-overlap
+transformer:
+  attention_dropout_rate: 0.0
+  dropout_rate: 0.1
+  mlp_dim: 3072
+  num_heads: 12
+  num_layers: 12
+
+12/16/2021 07:45:44 - INFO - __main__ - Training parameters Namespace(name='Arc_run', dataset='CUB_200_2011', data_root='/DATA/linjing/ly/dataset/CUB_200_2011//CUB_200_2011', model_type='ViT-B_16', pretrained_dir='ViT-B_16.npz', pretrained_model=None, output_dir='./output', img_size=448, train_batch_size=14, eval_batch_size=14, eval_every=428, learning_rate=0.03, weight_decay=0, num_steps=10710, decay_type='cosine', warmup_steps=500, max_grad_norm=1.0, local_rank=0, seed=42, gradient_accumulation_steps=1, fp16=True, fp16_opt_level='O2', loss_scale=0, smoothing_value=0.0, split='non-overlap', slide_step=12, n_gpu=1, device=device(type='cuda', index=0), nprocs=2)
+12/16/2021 07:45:44 - INFO - __main__ - Total Parameter: 	86.4M
+12/16/2021 07:45:45 - INFO - __main__ - classifier: token
+hidden_size: 768
+patches:
+  size: !!python/tuple
+  - 16
+  - 16
+representation_size: null
+slide_step: 12
+split: non-overlap
+transformer:
+  attention_dropout_rate: 0.0
+  dropout_rate: 0.1
+  mlp_dim: 3072
+  num_heads: 12
+  num_layers: 12
+
+12/16/2021 07:45:45 - INFO - __main__ - Training parameters Namespace(name='Arc_run', dataset='CUB_200_2011', data_root='/DATA/linjing/ly/dataset/CUB_200_2011//CUB_200_2011', model_type='ViT-B_16', pretrained_dir='ViT-B_16.npz', pretrained_model=None, output_dir='./output', img_size=448, train_batch_size=14, eval_batch_size=14, eval_every=428, learning_rate=0.03, weight_decay=0, num_steps=10710, decay_type='cosine', warmup_steps=500, max_grad_norm=1.0, local_rank=1, seed=42, gradient_accumulation_steps=1, fp16=True, fp16_opt_level='O2', loss_scale=0, smoothing_value=0.0, split='non-overlap', slide_step=12, n_gpu=1, device=device(type='cuda', index=1), nprocs=2)
+12/16/2021 07:45:45 - INFO - __main__ - Total Parameter: 	86.4M
+12/16/2021 07:47:10 - INFO - __main__ - ***** Running training *****
+12/16/2021 07:47:10 - INFO - __main__ -   Total optimization steps = 10710
+12/16/2021 07:47:10 - INFO - __main__ -   Instantaneous batch size per GPU = 14
+12/16/2021 07:47:10 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 28
+12/16/2021 07:47:10 - INFO - __main__ -   Gradient Accumulation steps = 1
+12/16/2021 07:48:52 - INFO - __main__ - ***** Running training *****
+12/16/2021 07:48:52 - INFO - __main__ -   Total optimization steps = 10710
+12/16/2021 07:48:52 - INFO - __main__ -   Instantaneous batch size per GPU = 14
+12/16/2021 07:48:52 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 28
+12/16/2021 07:48:52 - INFO - __main__ -   Gradient Accumulation steps = 1
+12/16/2021 07:53:03 - INFO - __main__ - train accuracy so far: 0.050734
+12/16/2021 07:53:03 - INFO - __main__ - train accuracy so far: 0.050734
+12/16/2021 07:57:15 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 07:57:15 - INFO - __main__ -   Num steps = 207
+12/16/2021 07:57:15 - INFO - __main__ -   Batch size = 14
+12/16/2021 07:57:15 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 07:57:15 - INFO - __main__ -   Num steps = 207
+12/16/2021 07:57:15 - INFO - __main__ -   Batch size = 14
+12/16/2021 07:59:03 - INFO - __main__ - 
+
+12/16/2021 07:59:03 - INFO - __main__ - 
+
+12/16/2021 07:59:03 - INFO - __main__ - Validation Results
+12/16/2021 07:59:03 - INFO - __main__ - Validation Results
+12/16/2021 07:59:03 - INFO - __main__ - Global Steps: 428
+12/16/2021 07:59:03 - INFO - __main__ - Global Steps: 428
+12/16/2021 07:59:03 - INFO - __main__ - Valid Loss: 4.41093
+12/16/2021 07:59:03 - INFO - __main__ - Valid Loss: 4.41350
+12/16/2021 07:59:03 - INFO - __main__ - Valid Accuracy: 0.84294
+12/16/2021 07:59:03 - INFO - __main__ - Valid Accuracy: 0.84294
+12/16/2021 07:59:14 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 07:59:14 - INFO - __main__ - best accuracy so far: 0.842941
+12/16/2021 07:59:14 - INFO - __main__ - train accuracy so far: 0.511682
+12/16/2021 07:59:14 - INFO - __main__ - train accuracy so far: 0.511682
+12/16/2021 08:03:27 - INFO - __main__ - train accuracy so far: 0.728471
+12/16/2021 08:03:27 - INFO - __main__ - train accuracy so far: 0.728471
+12/16/2021 08:07:38 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:07:38 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:07:38 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:07:38 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:07:38 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:07:38 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:09:27 - INFO - __main__ - 
+
+12/16/2021 08:09:27 - INFO - __main__ - Validation Results
+12/16/2021 08:09:27 - INFO - __main__ - 
+
+12/16/2021 08:09:27 - INFO - __main__ - Global Steps: 856
+12/16/2021 08:09:27 - INFO - __main__ - Validation Results
+12/16/2021 08:09:27 - INFO - __main__ - Valid Loss: 4.10498
+12/16/2021 08:09:27 - INFO - __main__ - Global Steps: 856
+12/16/2021 08:09:27 - INFO - __main__ - Valid Accuracy: 0.87314
+12/16/2021 08:09:27 - INFO - __main__ - Valid Loss: 4.10651
+12/16/2021 08:09:27 - INFO - __main__ - Valid Accuracy: 0.87314
+12/16/2021 08:09:41 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 08:09:41 - INFO - __main__ - best accuracy so far: 0.873145
+12/16/2021 08:09:41 - INFO - __main__ - train accuracy so far: 0.827103
+12/16/2021 08:09:41 - INFO - __main__ - train accuracy so far: 0.827103
+12/16/2021 08:13:54 - INFO - __main__ - train accuracy so far: 0.876502
+12/16/2021 08:13:54 - INFO - __main__ - train accuracy so far: 0.876502
+12/16/2021 08:18:06 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:18:06 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:18:06 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:18:06 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:18:06 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:18:06 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:19:55 - INFO - __main__ - 
+
+12/16/2021 08:19:55 - INFO - __main__ - 
+
+12/16/2021 08:19:55 - INFO - __main__ - Validation Results
+12/16/2021 08:19:55 - INFO - __main__ - Validation Results
+12/16/2021 08:19:55 - INFO - __main__ - Global Steps: 1284
+12/16/2021 08:19:55 - INFO - __main__ - Global Steps: 1284
+12/16/2021 08:19:55 - INFO - __main__ - Valid Loss: 3.97985
+12/16/2021 08:19:55 - INFO - __main__ - Valid Loss: 3.98790
+12/16/2021 08:19:55 - INFO - __main__ - Valid Accuracy: 0.88712
+12/16/2021 08:19:55 - INFO - __main__ - Valid Accuracy: 0.88712
+12/16/2021 08:20:09 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 08:20:09 - INFO - __main__ - best accuracy so far: 0.887125
+12/16/2021 08:20:09 - INFO - __main__ - train accuracy so far: 0.909880
+12/16/2021 08:20:09 - INFO - __main__ - train accuracy so far: 0.909880
+12/16/2021 08:24:22 - INFO - __main__ - train accuracy so far: 0.925067
+12/16/2021 08:24:22 - INFO - __main__ - train accuracy so far: 0.925067
+12/16/2021 08:28:35 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:28:35 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:28:35 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:28:35 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:28:35 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:28:35 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:30:24 - INFO - __main__ - 
+
+12/16/2021 08:30:24 - INFO - __main__ - Validation Results
+12/16/2021 08:30:24 - INFO - __main__ - Global Steps: 1712
+12/16/2021 08:30:24 - INFO - __main__ - Valid Loss: 3.90211
+12/16/2021 08:30:24 - INFO - __main__ - Valid Accuracy: 0.88350
+12/16/2021 08:30:24 - INFO - __main__ - 
+
+12/16/2021 08:30:24 - INFO - __main__ - Validation Results
+12/16/2021 08:30:24 - INFO - __main__ - Global Steps: 1712
+12/16/2021 08:30:24 - INFO - __main__ - Valid Loss: 3.90199
+12/16/2021 08:30:24 - INFO - __main__ - Valid Accuracy: 0.88350
+12/16/2021 08:30:24 - INFO - __main__ - best accuracy so far: 0.887125
+12/16/2021 08:30:25 - INFO - __main__ - train accuracy so far: 0.947430
+12/16/2021 08:30:25 - INFO - __main__ - train accuracy so far: 0.947430
+12/16/2021 08:34:38 - INFO - __main__ - train accuracy so far: 0.962784
+12/16/2021 08:34:38 - INFO - __main__ - train accuracy so far: 0.962784
+12/16/2021 08:38:52 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:38:52 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:38:52 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:38:52 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:38:52 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:38:52 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:40:40 - INFO - __main__ - 
+
+12/16/2021 08:40:40 - INFO - __main__ - Validation Results
+12/16/2021 08:40:40 - INFO - __main__ - Global Steps: 2140
+12/16/2021 08:40:40 - INFO - __main__ - 
+
+12/16/2021 08:40:40 - INFO - __main__ - Valid Loss: 3.79585
+12/16/2021 08:40:40 - INFO - __main__ - Validation Results
+12/16/2021 08:40:40 - INFO - __main__ - Valid Accuracy: 0.88488
+12/16/2021 08:40:40 - INFO - __main__ - Global Steps: 2140
+12/16/2021 08:40:40 - INFO - __main__ - best accuracy so far: 0.887125
+12/16/2021 08:40:40 - INFO - __main__ - Valid Loss: 3.79197
+12/16/2021 08:40:40 - INFO - __main__ - Valid Accuracy: 0.88488
+12/16/2021 08:40:41 - INFO - __main__ - train accuracy so far: 0.973298
+12/16/2021 08:40:41 - INFO - __main__ - train accuracy so far: 0.973298
+12/16/2021 08:44:54 - INFO - __main__ - train accuracy so far: 0.977470
+12/16/2021 08:44:54 - INFO - __main__ - train accuracy so far: 0.977470
+12/16/2021 08:49:06 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:49:06 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:49:06 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:49:06 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:49:06 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:49:06 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:50:56 - INFO - __main__ - 
+
+12/16/2021 08:50:56 - INFO - __main__ - Validation Results
+12/16/2021 08:50:56 - INFO - __main__ - Global Steps: 2568
+12/16/2021 08:50:56 - INFO - __main__ - Valid Loss: 3.75731
+12/16/2021 08:50:56 - INFO - __main__ - Valid Accuracy: 0.88678
+12/16/2021 08:50:56 - INFO - __main__ - 
+
+12/16/2021 08:50:56 - INFO - __main__ - Validation Results
+12/16/2021 08:50:56 - INFO - __main__ - Global Steps: 2568
+12/16/2021 08:50:56 - INFO - __main__ - Valid Loss: 3.75528
+12/16/2021 08:50:56 - INFO - __main__ - Valid Accuracy: 0.88678
+12/16/2021 08:50:56 - INFO - __main__ - best accuracy so far: 0.887125
+12/16/2021 08:50:56 - INFO - __main__ - train accuracy so far: 0.983645
+12/16/2021 08:50:56 - INFO - __main__ - train accuracy so far: 0.983645
+12/16/2021 08:55:09 - INFO - __main__ - train accuracy so far: 0.987150
+12/16/2021 08:55:09 - INFO - __main__ - train accuracy so far: 0.987150
+12/16/2021 08:59:23 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:59:23 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:59:23 - INFO - __main__ -   Batch size = 14
+12/16/2021 08:59:23 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 08:59:23 - INFO - __main__ -   Num steps = 207
+12/16/2021 08:59:23 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:01:12 - INFO - __main__ - 
+
+12/16/2021 09:01:12 - INFO - __main__ - Validation Results
+12/16/2021 09:01:12 - INFO - __main__ - Global Steps: 2996
+12/16/2021 09:01:12 - INFO - __main__ - 
+
+12/16/2021 09:01:12 - INFO - __main__ - Valid Loss: 3.70813
+12/16/2021 09:01:12 - INFO - __main__ - Validation Results
+12/16/2021 09:01:12 - INFO - __main__ - Valid Accuracy: 0.89058
+12/16/2021 09:01:12 - INFO - __main__ - Global Steps: 2996
+12/16/2021 09:01:12 - INFO - __main__ - Valid Loss: 3.71108
+12/16/2021 09:01:12 - INFO - __main__ - Valid Accuracy: 0.89058
+12/16/2021 09:01:24 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 09:01:24 - INFO - __main__ - best accuracy so far: 0.890576
+12/16/2021 09:01:24 - INFO - __main__ - train accuracy so far: 0.990320
+12/16/2021 09:01:24 - INFO - __main__ - train accuracy so far: 0.990320
+12/16/2021 09:05:40 - INFO - __main__ - train accuracy so far: 0.991656
+12/16/2021 09:05:40 - INFO - __main__ - train accuracy so far: 0.991656
+12/16/2021 09:09:55 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:09:55 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:09:55 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:09:55 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:09:55 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:09:55 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:11:45 - INFO - __main__ - 
+
+12/16/2021 09:11:45 - INFO - __main__ - Validation Results
+12/16/2021 09:11:45 - INFO - __main__ - Global Steps: 3424
+12/16/2021 09:11:45 - INFO - __main__ - Valid Loss: 3.65208
+12/16/2021 09:11:45 - INFO - __main__ - Valid Accuracy: 0.89541
+12/16/2021 09:11:45 - INFO - __main__ - 
+
+12/16/2021 09:11:45 - INFO - __main__ - Validation Results
+12/16/2021 09:11:45 - INFO - __main__ - Global Steps: 3424
+12/16/2021 09:11:45 - INFO - __main__ - Valid Loss: 3.64759
+12/16/2021 09:11:45 - INFO - __main__ - Valid Accuracy: 0.89541
+12/16/2021 09:11:55 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 09:11:55 - INFO - __main__ - best accuracy so far: 0.895409
+12/16/2021 09:11:56 - INFO - __main__ - train accuracy so far: 0.994993
+12/16/2021 09:11:56 - INFO - __main__ - train accuracy so far: 0.994993
+12/16/2021 09:16:10 - INFO - __main__ - train accuracy so far: 0.994326
+12/16/2021 09:16:10 - INFO - __main__ - train accuracy so far: 0.994326
+12/16/2021 09:20:26 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:20:26 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:20:26 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:20:26 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:20:26 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:20:26 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:22:15 - INFO - __main__ - 
+
+12/16/2021 09:22:15 - INFO - __main__ - Validation Results
+12/16/2021 09:22:15 - INFO - __main__ - Global Steps: 3852
+12/16/2021 09:22:15 - INFO - __main__ - Valid Loss: 3.61275
+12/16/2021 09:22:15 - INFO - __main__ - 
+
+12/16/2021 09:22:15 - INFO - __main__ - Valid Accuracy: 0.90197
+12/16/2021 09:22:15 - INFO - __main__ - Validation Results
+12/16/2021 09:22:15 - INFO - __main__ - Global Steps: 3852
+12/16/2021 09:22:15 - INFO - __main__ - Valid Loss: 3.60954
+12/16/2021 09:22:15 - INFO - __main__ - Valid Accuracy: 0.90197
+12/16/2021 09:22:26 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 09:22:26 - INFO - __main__ - best accuracy so far: 0.901968
+12/16/2021 09:22:26 - INFO - __main__ - train accuracy so far: 0.996662
+12/16/2021 09:22:26 - INFO - __main__ - train accuracy so far: 0.996662
+12/16/2021 09:26:43 - INFO - __main__ - train accuracy so far: 0.998164
+12/16/2021 09:26:43 - INFO - __main__ - train accuracy so far: 0.998164
+12/16/2021 09:30:58 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:30:58 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:30:58 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:30:58 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:30:58 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:30:58 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:32:49 - INFO - __main__ - 
+
+12/16/2021 09:32:49 - INFO - __main__ - Validation Results
+12/16/2021 09:32:49 - INFO - __main__ - Global Steps: 4280
+12/16/2021 09:32:49 - INFO - __main__ - Valid Loss: 3.60754
+12/16/2021 09:32:49 - INFO - __main__ - Valid Accuracy: 0.89713
+12/16/2021 09:32:49 - INFO - __main__ - 
+
+12/16/2021 09:32:49 - INFO - __main__ - Validation Results
+12/16/2021 09:32:49 - INFO - __main__ - Global Steps: 4280
+12/16/2021 09:32:49 - INFO - __main__ - Valid Loss: 3.60962
+12/16/2021 09:32:49 - INFO - __main__ - Valid Accuracy: 0.89713
+12/16/2021 09:32:49 - INFO - __main__ - best accuracy so far: 0.901968
+12/16/2021 09:32:49 - INFO - __main__ - train accuracy so far: 0.996996
+12/16/2021 09:32:49 - INFO - __main__ - train accuracy so far: 0.996996
+12/16/2021 09:37:05 - INFO - __main__ - train accuracy so far: 0.998498
+12/16/2021 09:37:05 - INFO - __main__ - train accuracy so far: 0.998498
+12/16/2021 09:41:20 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:41:20 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:41:20 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:41:20 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:41:20 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:41:20 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:43:09 - INFO - __main__ - 
+
+12/16/2021 09:43:09 - INFO - __main__ - Validation Results
+12/16/2021 09:43:09 - INFO - __main__ - Global Steps: 4708
+12/16/2021 09:43:09 - INFO - __main__ - Valid Loss: 3.56476
+12/16/2021 09:43:09 - INFO - __main__ - Valid Accuracy: 0.89955
+12/16/2021 09:43:09 - INFO - __main__ - 
+
+12/16/2021 09:43:09 - INFO - __main__ - Validation Results
+12/16/2021 09:43:09 - INFO - __main__ - Global Steps: 4708
+12/16/2021 09:43:09 - INFO - __main__ - Valid Loss: 3.56003
+12/16/2021 09:43:09 - INFO - __main__ - Valid Accuracy: 0.89955
+12/16/2021 09:43:09 - INFO - __main__ - best accuracy so far: 0.901968
+12/16/2021 09:43:10 - INFO - __main__ - train accuracy so far: 0.999166
+12/16/2021 09:43:10 - INFO - __main__ - train accuracy so far: 0.999166
+12/16/2021 09:47:24 - INFO - __main__ - train accuracy so far: 0.999499
+12/16/2021 09:47:24 - INFO - __main__ - train accuracy so far: 0.999499
+12/16/2021 09:51:38 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:51:38 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:51:38 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:51:38 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 09:51:38 - INFO - __main__ -   Num steps = 207
+12/16/2021 09:51:38 - INFO - __main__ -   Batch size = 14
+12/16/2021 09:53:28 - INFO - __main__ - 
+
+12/16/2021 09:53:28 - INFO - __main__ - 
+
+12/16/2021 09:53:28 - INFO - __main__ - Validation Results
+12/16/2021 09:53:28 - INFO - __main__ - Global Steps: 5136
+12/16/2021 09:53:28 - INFO - __main__ - Valid Loss: 3.56270
+12/16/2021 09:53:28 - INFO - __main__ - Valid Accuracy: 0.90490
+12/16/2021 09:53:28 - INFO - __main__ - Validation Results
+12/16/2021 09:53:28 - INFO - __main__ - Global Steps: 5136
+12/16/2021 09:53:28 - INFO - __main__ - Valid Loss: 3.56837
+12/16/2021 09:53:28 - INFO - __main__ - Valid Accuracy: 0.90490
+12/16/2021 09:53:41 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 09:53:41 - INFO - __main__ - best accuracy so far: 0.904902
+12/16/2021 09:53:41 - INFO - __main__ - train accuracy so far: 0.999499
+12/16/2021 09:53:41 - INFO - __main__ - train accuracy so far: 0.999499
+12/16/2021 09:57:55 - INFO - __main__ - train accuracy so far: 0.999332
+12/16/2021 09:57:55 - INFO - __main__ - train accuracy so far: 0.999332
+12/16/2021 10:02:08 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 10:02:08 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 10:02:08 - INFO - __main__ -   Num steps = 207
+12/16/2021 10:02:08 - INFO - __main__ -   Num steps = 207
+12/16/2021 10:02:08 - INFO - __main__ -   Batch size = 14
+12/16/2021 10:02:08 - INFO - __main__ -   Batch size = 14
+12/16/2021 10:03:58 - INFO - __main__ - 
+
+12/16/2021 10:03:58 - INFO - __main__ - Validation Results
+12/16/2021 10:03:58 - INFO - __main__ - 
+
+12/16/2021 10:03:58 - INFO - __main__ - Global Steps: 5564
+12/16/2021 10:03:58 - INFO - __main__ - Validation Results
+12/16/2021 10:03:58 - INFO - __main__ - Valid Loss: 3.55972
+12/16/2021 10:03:58 - INFO - __main__ - Global Steps: 5564
+12/16/2021 10:03:58 - INFO - __main__ - Valid Accuracy: 0.90456
+12/16/2021 10:03:58 - INFO - __main__ - Valid Loss: 3.56156
+12/16/2021 10:03:58 - INFO - __main__ - Valid Accuracy: 0.90456
+12/16/2021 10:03:58 - INFO - __main__ - best accuracy so far: 0.904902
+12/16/2021 10:03:58 - INFO - __main__ - train accuracy so far: 0.999666
+12/16/2021 10:03:58 - INFO - __main__ - train accuracy so far: 0.999666
+12/16/2021 10:08:12 - INFO - __main__ - train accuracy so far: 0.999833
+12/16/2021 10:08:12 - INFO - __main__ - train accuracy so far: 0.999833
+12/16/2021 10:12:25 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 10:12:25 - INFO - __main__ - ***** Running Validation *****
+12/16/2021 10:12:25 - INFO - __main__ -   Num steps = 207
+12/16/2021 10:12:25 - INFO - __main__ -   Num steps = 207
+12/16/2021 10:12:25 - INFO - __main__ -   Batch size = 14
+12/16/2021 10:12:25 - INFO - __main__ -   Batch size = 14
+12/16/2021 10:14:15 - INFO - __main__ - 
+
+12/16/2021 10:14:15 - INFO - __main__ - Validation Results
+12/16/2021 10:14:15 - INFO - __main__ - 
+
+12/16/2021 10:14:15 - INFO - __main__ - Global Steps: 5992
+12/16/2021 10:14:15 - INFO - __main__ - Validation Results
+12/16/2021 10:14:15 - INFO - __main__ - Valid Loss: 3.53949
+12/16/2021 10:14:15 - INFO - __main__ - Global Steps: 5992
+12/16/2021 10:14:15 - INFO - __main__ - Valid Accuracy: 0.90956
+12/16/2021 10:14:15 - INFO - __main__ - Valid Loss: 3.53797
+12/16/2021 10:14:15 - INFO - __main__ - Valid Accuracy: 0.90956
+12/16/2021 10:14:27 - INFO - __main__ - Saved model checkpoint to [DIR: ./output]
+12/16/2021 10:14:27 - INFO - __main__ - best accuracy so far: 0.909562
+12/16/2021 10:14:27 - INFO - __main__ - train accuracy so far: 1.000000
+12/16/2021 10:14:27 - INFO - __main__ - train accuracy so far: 1.000000

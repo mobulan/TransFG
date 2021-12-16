@@ -15,6 +15,8 @@ import torch.distributed as dist
 
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
+from apex import amp
+from apex.parallel import DistributedDataParallel as DDP
 
 from models.modeling import VisionTransformer, CONFIGS
 from utils.scheduler import WarmupLinearSchedule, WarmupCosineSchedule
@@ -51,11 +53,11 @@ def reduce_mean(tensor, nprocs):
 
 def save_model(args, model):
     model_to_save = model.module if hasattr(model, 'module') else model
-    model_checkpoint = os.path.join(args.output_dir,
-        "%s_checkpoint.bin" % args.name+time.strftime('%Y-%m-%d-%H_%M_%S',time.localtime()))
+    model_checkpoint = os.path.join(args.output_dir, "%s_checkpoint.bin" % args.name)
     if args.fp16:
         checkpoint = {
             'model': model_to_save.state_dict(),
+            'amp': amp.state_dict()
         }
     else:
         checkpoint = {
@@ -158,17 +160,16 @@ def valid(args, model, writer, test_loader, global_step):
     logger.info("Global Steps: %d" % global_step)
     logger.info("Valid Loss: %2.5f" % eval_losses.avg)
     logger.info("Valid Accuracy: %2.5f" % val_accuracy)
-    if args.local_rank in [-1, 0]:
-        writer.add_scalar("test/accuracy", scalar_value=val_accuracy, global_step=global_step)
+    writer.add_scalar("test/accuracy", scalar_value=val_accuracy, global_step=global_step)
         
     return val_accuracy
 
-def train(args, model):
+def train(args, model,tensorlog_path):
     """ Train the model """
-    if args.local_rank in [-1, 0]:
-        os.makedirs(args.output_dir, exist_ok=True)
-    writer = SummaryWriter(log_dir=os.path.join("logs", args.name,time.strftime('%Y/%m/%d %H:%M:%S.log',time.localtime())))
-
+    os.makedirs(args.output_dir, exist_ok=True)
+    #######################
+    writer = SummaryWriter(tensorlog_path)
+    #######################
     args.train_batch_size = args.train_batch_size // args.gradient_accumulation_steps
 
     # Prepare dataset
@@ -184,7 +185,16 @@ def train(args, model):
         scheduler = WarmupCosineSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
     else:
         scheduler = WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
+
+    if args.fp16:
+        model, optimizer = amp.initialize(models=model,
+                                          optimizers=optimizer,
+                                          opt_level=args.fp16_opt_level)
+        amp._amp_state.loss_scalers[0]._loss_scale = 2**20
+
     # Distributed training
+    if args.local_rank != -1:
+        model = DDP(model, message_size=250000000, gradient_predivide_factor=get_world_size())
 
     # Train!
     logger.info("***** Running training *****")
@@ -230,12 +240,18 @@ def train(args, model):
 
             if args.gradient_accumulation_steps > 1:
                 loss = loss / args.gradient_accumulation_steps
+            if args.fp16:
+                with amp.scale_loss(loss, optimizer) as scaled_loss:
+                    scaled_loss.backward()
             else:
                 loss.backward()
 
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 losses.update(loss.item()*args.gradient_accumulation_steps)
-                torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+                if args.fp16:
+                    torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), args.max_grad_norm)
+                else:
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
                 scheduler.step()
                 optimizer.step()
                 optimizer.zero_grad()
@@ -244,9 +260,8 @@ def train(args, model):
                 epoch_iterator.set_description(
                     "Training (%d / %d Steps) (loss=%2.5f)" % (global_step, t_total, losses.val)
                 )
-                if args.local_rank in [-1, 0]:
-                    writer.add_scalar("train/loss", scalar_value=losses.val, global_step=global_step)
-                    writer.add_scalar("train/lr", scalar_value=scheduler.get_lr()[0], global_step=global_step)
+                writer.add_scalar("train/loss", scalar_value=losses.val, global_step=global_step)
+                writer.add_scalar("train/lr", scalar_value=scheduler.get_lr()[0], global_step=global_step)
                 if global_step % args.eval_every == 0:
                     with torch.no_grad():
                         accuracy = valid(args, model, writer, test_loader, global_step)
@@ -325,7 +340,7 @@ def main():
                         help="Number of updates steps to accumulate before performing a backward/update pass.")
     parser.add_argument('--fp16', action='store_true',
                         help="Whether to use 16-bit float precision instead of 32-bit")
-    parser.add_argument('-qy-fp16_opt_level', type=str, default='O2',
+    parser.add_argument('--fp16_opt_level', type=str, default='O2',
                         help="For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']."
                              "See details at https://nvidia.github.io/apex/amp.html")
     parser.add_argument('--loss_scale', type=float, default=0,
@@ -343,6 +358,20 @@ def main():
 
     args = parser.parse_args()
 
+    # Setup logging
+    #######################
+    tensorlog_path = log_dir=os.path.join("logs", args.name,time.strftime('%Y-%m-%d_%H-%M',time.localtime()))
+    os.makedirs(tensorlog_path, exist_ok=True)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+                        datefmt='%m/%d/%Y %H:%M:%S',
+                        filename=os.path.join(tensorlog_path,time.strftime('%Y-%m-%d_%H-%M.txt',time.localtime())),
+                        level=logging.INFO)
+    logger.info('create File')
+    logger.warning('test')
+    logger.error('test')
+    print('logger finish')
+    #######################
+
     # if args.fp16 and args.smoothing_value != 0:
     #     raise NotImplementedError("label smoothing not supported for fp16 training now")
     args.data_root = '{}/{}'.format(args.data_root, args.dataset)
@@ -359,21 +388,14 @@ def main():
     args.device = device
     args.nprocs = torch.cuda.device_count()
 
-    # Setup logging
-    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
-                        datefmt='%m/%d/%Y %H:%M:%S',
-                        filename=time.strftime('%Y-%m-%d-%H_%M_%S.txt',time.localtime()),
-                        level=logging.INFO if args.local_rank in [-1, 0] else logging.WARN)
     logger.warning("Process rank: %s, device: %s, n_gpu: %s, distributed training: %s, 16-bits training: %s" %
-                   (args.local_rank, args.device, args.n_gpu, bool(args.local_rank != -1), args.fp16))
-
+                (args.local_rank, args.device, args.n_gpu, bool(args.local_rank != -1), args.fp16))
     # Set seed
     set_seed(args)
-
     # Model & Tokenizer Setup
     args, model = setup(args)
     # Training
-    train(args, model)
+    train(args, model,tensorlog_path)
 
 if __name__ == "__main__":
     main()

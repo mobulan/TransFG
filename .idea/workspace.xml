@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3b05660-7b4f-46a2-9530-fe3fc805d4b1" name="变更" comment="add_arcface" />
+    <list default="true" id="f3b05660-7b4f-46a2-9530-fe3fc805d4b1" name="变更" comment="add_arcface">
+      <change beforePath="$PROJECT_DIR$/models/modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/modeling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,7 +62,7 @@
       <recent name="D:\实验\代码\TransFG" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.scratch">
     <configuration name="modeling" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TransFG" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -82,8 +85,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TransFG" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.scratch" />
         <item itemvalue="Python.modeling" />
       </list>
     </recent_temporary>
@@ -101,6 +127,15 @@
       <workItem from="1638870258163" duration="385000" />
       <workItem from="1639230209280" duration="9089000" />
       <workItem from="1639381725440" duration="8265000" />
+      <workItem from="1639399562925" duration="4269000" />
+      <workItem from="1639406368572" duration="803000" />
+      <workItem from="1639448427838" duration="2379000" />
+      <workItem from="1639460558102" duration="1387000" />
+      <workItem from="1639469377895" duration="4617000" />
+      <workItem from="1639474655557" duration="510000" />
+      <workItem from="1639478511238" duration="4899000" />
+      <workItem from="1639549966878" duration="2265000" />
+      <workItem from="1639620656116" duration="408000" />
     </task>
     <task id="LOCAL-00001" summary="add_arcface">
       <created>1639361238536</created>
@@ -123,7 +158,28 @@
       <option name="project" value="LOCAL" />
       <updated>1639394247168</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add_arcface">
+      <created>1639448449519</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1639448449519</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add_arcface">
+      <created>1639459707117</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1639459707117</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add_arcface">
+      <created>1639474330941</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1639474330941</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,6 +201,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="add_arcface" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TransFG$modeling.coverage" NAME="modeling 覆盖结果" MODIFIED="1639390650174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/TransFG$scratch.coverage" NAME="scratch 覆盖结果" MODIFIED="1639486738996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/TransFG$modeling.coverage" NAME="modeling 覆盖结果" MODIFIED="1639481303932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
   </component>
 </project>

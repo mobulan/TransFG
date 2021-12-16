@@ -48,17 +48,21 @@ pip3 install -r requirements.txt
 To train TransFG on CUB-200-2011 dataset with 4 gpus in FP-16 mode for 10000 steps run:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 python3 -m torch.distributed.launch --nproc_per_node=4 train.py --dataset CUB_200_2011 --split overlap --num_steps 10000 --fp16 --name sample_run
+CUDA_VISIBLE_DEVICES=0 python3 -m torch.distributed.launch --nproc_per_node=1 train.py --dataset CUB_200_2011 --split overlap --num_steps 10000 --fp16 --name sample_run --img_size 28
 ```
 ```bash
-CUDA_VISIBLE_DEVICES=0 python3 -m torch.distributed.launch --nproc_per_node=1 train.py --dataset CUB_200_2011 --data_root D:\\实验\\数据集\\CUB_200_2011 --split overlap --num_steps 10000 --fp16 --name sample_run --pretrained_dir 'ViT-B_16.npz'
+CUDA_VISIBLE_DEVICES=0,1 python3 -m torch.distributed.launch --nproc_per_node=2 train.py --dataset CUB_200_2011 --data_root /DATA/linjing/ly/dataset/CUB_200_2011/ --eval_every 500 --num_steps 10000 --fp16 --name run-2021-12-07-15-30 --pretrained_dir 'ViT-B_16.npz' --train_batch_size 10 --eval_batch_size 10
 ```
 ```bash
-CUDA_VISIBLE_DEVICES=0 python3 -m torch.distributed.launch --nproc_per_node=1 train.py --dataset CUB_200_2011 --data_root ~/datasets --num_steps 10000 --name sample_run --pretrained_dir 'ViT-B_16.npz'
+CUDA_VISIBLE_DEVICES=0 python3 -m torch.distributed.launch --nproc_per_node=1 train.py --dataset CUB_200_2011 --data_root /DATA/linjing/ly/dataset/CUB_200_2011/ --num_steps 10000 --fp16 --name sample_run2 --pretrained_dir 'ViT-B_16.npz'
 ```
 
 ```bash
-CUDA_VISIBLE_DEVICES=0,1 python3 -m torch.distributed.launch --nproc_per_node=2 train.py --dataset CUB_200_2011 --data_root /DATA/linjing/ly/dataset/CUB_200_2011/ --eval_every 428 --num_steps 10700 --fp16 --name run-2021-12-13-22-30 --pretrained_dir 'ViT-B_16.npz' --train_batch_size 14 --eval_batch_size 14
+ssh -L 16006:127.0.0.1:6006 linjing@210.45.215.197
+```
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1 python3 -m torch.distributed.launch --nproc_per_node=2 train.py --dataset CUB_200_2011 --data_root /DATA/linjing/ly/dataset/CUB_200_2011/ --eval_every 428 --num_steps 10710 --fp16 --name TransFG_run --pretrained_dir 'ViT-B_16.npz' --train_batch_size 14 --eval_batch_size 14
 ```
 
 

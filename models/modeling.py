@@ -6,7 +6,6 @@ from __future__ import print_function
 import copy
 import logging
 import math
-import time
 
 from os.path import join as pjoin
 
@@ -20,8 +19,6 @@ from torch.nn.modules.utils import _pair
 from scipy import ndimage
 
 import models.configs as configs
-
-import time
 
 logger = logging.getLogger(__name__)
 
@@ -299,7 +296,7 @@ class VisionTransformer(nn.Module):
         self.classifier = config.classifier
         self.transformer = Transformer(config, img_size)
         self.part_head = Linear(config.hidden_size, num_classes,bias=False)
-        self.arcface = ArcFace(s=20,m=0.4)
+        self.arcface = ArcFace(s=20,m=0.1,a=0.2)
     def forward(self, x, labels=None):
         part_tokens = self.transformer(x)
         part_logits = self.part_head(part_tokens[:, 0])
@@ -311,7 +308,7 @@ class VisionTransformer(nn.Module):
             else:
                 loss_fct = LabelSmoothing(self.smoothing_value)
             part_loss = loss_fct(part_logits.view(-1, self.num_classes), labels.view(-1))
-            contrast_loss = con_loss(part_tokens[:, 0], labels.view(-1))
+            # contrast_loss = con_loss(part_tokens[:, 0], labels.view(-1))
             # loss = part_loss + contrast_loss
             loss = part_loss
             return loss, part_logits
@@ -378,40 +375,37 @@ def con_loss(features, labels):
     neg_cos_matrix[neg_cos_matrix < 0] = 0
     loss = (pos_cos_matrix * pos_label_matrix).sum() + (neg_cos_matrix * neg_label_matrix).sum()
     loss /= (B * B)
+    # print(con_loss)s
     return loss
-
 
 class ArcFace(nn.Module):
     ''' s: norm of input feature
         m: margin
         cos(theta + m)'''
-    def __init__(self, s=30.0, m=0.50):
+    def __init__(self, s=30.0, m=0.50, a=0.5):
         super(ArcFace, self).__init__()
         self.s = s
         self.m = m
-        self.alpha = 0.5
+        self.alpha = a
 
     def forward(self, logits, labels):
         cosine = F.normalize(logits,dim=-1)
         # print(f'cosine:\n{cosine}')
         # scale = logits.norm(-1).reshape(-1,1)
-
-        # 根据分类概率的区分度来动态调整边距
         probability = F.softmax(cosine,dim=-1)
         sample_index = torch.arange(labels.shape[0])
         pred = probability[sample_index,labels.reshape(-1)]
         difference = abs(probability-pred.reshape(-1,1)).sum(-1)
         difference = (difference/cosine.shape[-1]).reshape(-1,1)
-        class_margin = self.alpha * (1 - difference) + self.m
-
+        class_margin = self.alpha * difference + self.m
         # print(f'probability\n{probability}')
         # print(f'difference:{difference}')
 
 
-        one_hot = torch.zeros(cosine.size(),device='cuda').half()
-        print(one_hot.dtype)
         # one_hot = torch.zeros(cosine.size())
-        one_hot.scatter_(1, labels.view(-1, 1), class_margin).float()
+        one_hot = torch.zeros(cosine.size(),device='cuda').half()
+
+        one_hot.scatter_(1, labels.view(-1, 1).long(), class_margin)
         arc_cos = torch.arccos(cosine) + one_hot
         output = torch.cos(arc_cos)
         output *= self.s
@@ -428,11 +422,11 @@ CONFIGS = {
 }
 if __name__ == '__main__':
     loss = CrossEntropyLoss()
-    device = 'cuda'
-    A = torch.randn(25,device=device).reshape(-1,5).float()
-    W = Linear(5,5,bias=False,device=device)
+    A = torch.randn(25).reshape(-1,5).float()
+    E = torch.eye(5)
+    W = Linear(5,5,bias=False)
     logits = W(A)
-    labels = torch.tensor([0,1,2,2,4],device=device)
+    labels = torch.tensor([0,1,2,2,4])
     arc = ArcFace(s = 20,m=0.2)
     pred = arc(logits,labels)
     loss = CrossEntropyLoss()
